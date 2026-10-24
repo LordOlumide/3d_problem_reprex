@@ -1,10 +1,9 @@
-
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -50,16 +49,23 @@ class _HomeScreenState extends State<HomeScreen> {
     final r21 = cy * sx;
     final r22 = cy * cx;
 
-    // Construct the complete 4x4 matrix directly.
-    // Matrix4 constructor arguments are column-major.
     return Matrix4(
-      r00, r10, r20, 0,
-      r01, r11, r21, 0,
-      r02, r12, r22, perspectiveStrength,
+      r00,
+      r10,
+      r20,
+      perspectiveStrength * r20,
+      r01,
+      r11,
+      r21,
+      perspectiveStrength * r21,
+      r02,
+      r12,
+      r22,
+      perspectiveStrength * r22,
       xTranslation,
       yTranslation,
       zTranslation,
-      1,
+      perspectiveStrength * zTranslation + 1,
     );
   }
 
@@ -131,7 +137,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       borderRadius: BorderRadius.circular(20),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.blue.withValues(alpha: 0.3),
+                          color: Colors.blue.withAlpha(60),
                           blurRadius: 20,
                           offset: const Offset(0, 10),
                         ),
@@ -172,24 +178,21 @@ class _HomeScreenState extends State<HomeScreen> {
                       value: xTranslation,
                       min: -200,
                       max: 200,
-                      onChanged: (v) =>
-                          setState(() => xTranslation = v),
+                      onChanged: (v) => setState(() => xTranslation = v),
                     ),
                     buildSlider(
                       label: 'Y Translation',
                       value: yTranslation,
                       min: -200,
                       max: 200,
-                      onChanged: (v) =>
-                          setState(() => yTranslation = v),
+                      onChanged: (v) => setState(() => yTranslation = v),
                     ),
                     buildSlider(
                       label: 'Z Translation',
                       value: zTranslation,
                       min: -500,
                       max: 500,
-                      onChanged: (v) =>
-                          setState(() => zTranslation = v),
+                      onChanged: (v) => setState(() => zTranslation = v),
                     ),
                     const SizedBox(height: 12),
                     const Align(
@@ -207,24 +210,21 @@ class _HomeScreenState extends State<HomeScreen> {
                       value: xAngle,
                       min: -180,
                       max: 180,
-                      onChanged: (v) =>
-                          setState(() => xAngle = v),
+                      onChanged: (v) => setState(() => xAngle = v),
                     ),
                     buildSlider(
                       label: 'Y Angle',
                       value: yAngle,
                       min: -180,
                       max: 180,
-                      onChanged: (v) =>
-                          setState(() => yAngle = v),
+                      onChanged: (v) => setState(() => yAngle = v),
                     ),
                     buildSlider(
                       label: 'Z Angle',
                       value: zAngle,
                       min: -180,
                       max: 180,
-                      onChanged: (v) =>
-                          setState(() => zAngle = v),
+                      onChanged: (v) => setState(() => zAngle = v),
                     ),
                     const SizedBox(height: 12),
                     OutlinedButton.icon(
